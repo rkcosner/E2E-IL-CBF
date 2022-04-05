@@ -1,4 +1,4 @@
-# End-to-End Imitation Learning with Safety Guarantees using Control Barrier Functions
+# End-to-End Imitation Learning with Safety Guarantees using Control Barrier Functions [[PDF]](https://www.rkcosner.com/assets/files/e2eIlCBF.pdf)
 
 <p align="center">
  <img src="figures/overview_figure.png" />
