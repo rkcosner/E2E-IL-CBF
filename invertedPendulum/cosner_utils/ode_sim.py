@@ -130,6 +130,7 @@ class System:
 
         plt.show()
 
+        os.system("mkdir " + save_path)
         utils.saveFigure(state_fig, "state_subplots.png", save_path)
         utils.saveFigure(input_fig, "input_subplots.png", save_path)
 
@@ -232,14 +233,14 @@ class InvertedPendulum(System):
         u = np.zeros((m,1))
         k = 0.75
         u[0,0] = -k*x[0,0]
-        return u
+        return u, True
 
     def controllerDes(self, x):
         m = self.input_dim
         u = np.zeros((m,1))
         k = 0.75
         u[0,0] = -k*x[0,0]
-        return u
+        return u, True
 
     def fbLinController(self, x):
         m = self.input_dim
@@ -247,7 +248,7 @@ class InvertedPendulum(System):
         Kp = 1
         Kd = 1
         u[0,0] = -np.cos(x[0,0]) - (Kp*x[0,0] + Kd*x[1,0])
-        return u
+        return u, True
 
     def ip_clf(self, x):
         m = 1
@@ -258,7 +259,7 @@ class InvertedPendulum(System):
         # P = np.array([[np.sqrt(3), 1], [1, np.sqrt(3)]])
         u[0, 0] = -np.cos(x[0, 0]) - k1 * x[0, 0] - k2 * x[1, 0]
 
-        return u
+        return u, True
 
     def cbfqp(self, x):
         m = self.input_dim
@@ -273,9 +274,9 @@ class InvertedPendulum(System):
         Lgh = -2*x.T@P@g
         Lfh = -2*x.T@P@f
         if Lfh >= -alpha*h:
-            return u
+            return u, True
         else:
-            return Lgh.T/(Lgh@Lgh.T)*(-Lfh - alpha*h)
+            return Lgh.T/(Lgh@Lgh.T)*(-Lfh - alpha*h), True
 
 
     def getSafetyVal(self, x):
@@ -296,7 +297,8 @@ class InvertedPendulum(System):
         h = c - x.T@P@x
         Lgh = -2*x.T@P@g
         Lfh = -2*x.T@P@f
-        u, flag = K_CBF_SOCP([[Lfh, Lgh, h]], u_des=self.controllerDes(x), alpha=1, sigma=2, MRCBF_add=0.027, MRCBF_mult=0.04)
+        u_des, _ = self.controllerDes(x)
+        u, flag = K_CBF_SOCP([[Lfh, Lgh, h]], u_des, alpha=1, sigma=2, MRCBF_add=0.027, MRCBF_mult=0.04)
 
         return u, flag
 

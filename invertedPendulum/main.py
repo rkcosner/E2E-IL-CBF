@@ -15,7 +15,6 @@ def printInfo(timestamp):
     print("Hi!")
     print("Running the CDC 2022 script with datetime label :", timestamp)
 
-
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     """

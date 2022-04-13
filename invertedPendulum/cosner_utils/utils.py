@@ -25,6 +25,9 @@ def saveFigure(fig, name, path):
 
 def createDataOutputFolder(prepath, timestamp):
     path = "./data/dataOut/" + prepath + "/"+timestamp
+    os.system("mkdir ./data")
+    os.system("mkdir ./data/dataOut " ) 
+    os.system("mkdir ./data/dataOut/inverted_pendulum")
     os.system("mkdir " + path)
     return path
 
@@ -64,3 +67,22 @@ def getEllipse():
     y_bottom = -np.array(y)
     ey = np.hstack([y, y_bottom])
     return ex, ey
+
+
+def getUserInfo(): 
+    state = 'w'
+    while True: 
+        state = input('\tyes (y) or no (n)')
+        if state == 'y': 
+            flag = True
+            break 
+        elif state=='n': 
+            flag = False
+            break 
+        else: 
+            print("\t Sorry, that wasn't an option,\n \tplease select either 'y' for yes or 'n' for no.")
+    return flag 
+
+
+def printInfo():
+    print("\n\nRunning the CDC 2022 for the paper titled \"End-to-End Imitation Learning with Safety Guarantees using Control Barrier Functions\" ")
